@@ -1,0 +1,45 @@
+<html>
+	<head>
+	<link type="text/css" href="js/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+	<link rel="stylesheet" type = "text/css" href="js/jquery.jqplot.min.css" />
+	<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
+	<script type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
+	<script type="text/javascript" src="js/jqplot.donutRenderer.min.js"></script>
+	<script type="text/javascript">
+	var start;
+	var end;
+	var count = 0;
+	function get_date(){
+		date = new Date();
+		date_string = date.getFullYear()  + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + "T" + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2);
+		
+		return (date_string);
+	}
+	function get_2digit(data){
+		return (("0" + data).slice(-2));
+	}
+	function counter(){
+		count++;
+		data = get_2digit(Math.floor(count / 60)) + ':' + get_2digit(count % 60);
+		$("#counter").attr("value", data);
+	}
+	function get_plot(){
+		$.getJSON("/cgi-bin/like_count_json.py/", {"start":start, "end":end}, function(json){
+			var plot1 = $.jqplot('chart', [json.chart_data], {cursor: {show:true, tooltipLocation: 'nw'}, axes: {xaxis: { min: 0} ,yaxis: { min:0}}, seriesDefaults: {markerOptions: {"size": 0}}}).replot();
+		});
+	}
+	</script>
+	</head>
+	<body>
+		<form>
+			<input id="counter" type="text" value="00:00" />
+			<input type="button" value="start" onclick="start = get_date(); setInterval('counter()', 1000);"/>
+			<input type="button" value="end" onclick="end = get_date(); get_plot();"/>
+		</form>
+		<div id="chart" style="width:640px; height:480px;">
+		</div>
+	</body>
+</html>
+

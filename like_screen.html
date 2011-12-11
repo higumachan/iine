@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<style>
+		</style>
+		
+		<script src="js/jquery.js"></script>
+		<script type="text/javascript">
+			var count = 0;
+			function GetRandomNumber() {
+		   		return (Math.random() * 85);
+			}
+			function DrawLike() {
+				$.getJSON("./cgi-bin/_json.py", {}, function(json){
+					for (var i = 0; i < json.like_count; i++){
+						var style = "left:" + GetRandomNumber() +"%;"+ "top:" + GetRandomNumber() +"%;" +  "position:absolute;opacity:1.0;";
+						$("body").html($("body").html() + "<h1 " + 'class="t2" id="' + count +'" ' + "style=" + style + ">(ÅEÅÕÅE)≤≤»!!</h1>");
+						count++;
+					}
+				});
+			}
+			function Fade(){
+				for (var i = 0; i < count; i++){
+					var c = $("#" + i).attr("class");
+					var opacity = $("#" + i).css("opacity");
+					if (c == "t2"){
+						if (opacity - 0.01 < 0){
+							$("#" + i).css("display", "none");
+						}
+						else {
+							$("#" + i).css("opacity", opacity - 0.01);
+						}
+					}
+					else {
+						if (opacity + 0.1 > 1.0) {
+							$("#" + i).attr("class", "t2");
+						}
+						else {
+							$("#" + i).css("opacity", opacity + 0.1);
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+	<script type="text/javascript">
+		setInterval(DrawLike, 500);
+		setInterval(Fade, 10);
+	</script>
+	</body>
+</html>
