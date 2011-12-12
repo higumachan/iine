@@ -26,7 +26,7 @@
 		$("#counter").attr("value", data);
 	}
 	function get_plot(){
-		$.getJSON("/cgi-bin/like_count_json.py/", {"start":start, "end":end}, function(json){
+		$.getJSON("/cgi-bin/like_hist.py", {"start":start, "end":end}, function(json){
 			var plot1 = $.jqplot('chart', [json.chart_data], {cursor: {show:true, tooltipLocation: 'nw'}, axes: {xaxis: { min: 0} ,yaxis: { min:0}}, seriesDefaults: {markerOptions: {"size": 0}}}).replot();
 		});
 	}
